@@ -9,8 +9,16 @@ namespace UtilitySharp.Tests
         [TestMethod]
         public void CleanAndConvert_Int32()
         {
-            var expected = 7510;
+            var expected = 8;
             var actual = StringHelper.CleanAndConvert<Int32>("Hmmm... I would give it a 7.5 out of 10.");
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CleanAndConvert_Double()
+        {
+            var expected = 7.5;
+            var actual = StringHelper.CleanAndConvert<Double>("Hmmm... I would give it a 7.5 out of 10.");
             Assert.AreEqual(expected, actual);
         }
 

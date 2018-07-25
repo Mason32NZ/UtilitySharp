@@ -7,12 +7,17 @@
     <PackageProjectUrl>https://github.com/Mason32NZ/UtilitySharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Mason32NZ/UtilitySharp</RepositoryUrl>
     <RepositoryType>Public</RepositoryType>
-    <Version>1.0.0.0</Version>
+    <Version>1.0.0.1</Version>
     <Description>A jack of all trades and master of none. UtilitySharp provides helper classes for things such as strings, and numbers so you don’t have to reinvent the wheel.</Description>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\UtilitySharp.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\UtilitySharp.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

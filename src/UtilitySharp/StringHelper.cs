@@ -11,9 +11,12 @@ namespace UtilitySharp
         /// Cleans str and converts it to the provided type.
         /// </summary>
         /// <param name="str">The string or object that supports .ToString() to be cleaned and converted.</param>
-        /// <param name="regex">A regex string used to either remove unwanted text or select the desired text. Please NOTE that this method already uses [^0-9.] for numeric convertions.</param>
+        /// <param name="regex">A regex string used to either remove unwanted text or select the desired text. Please NOTE that this method already cleans the string for numeric conversions.</param>
         /// <param name="action">An enum used to dictate what the regex string should do. It is RECOMMENDED that you use regex to select the exact substring you need, to reduce noise.</param>
         /// <param name="format">A formatting string used for DateTime.ParseExact(). RECOMMENDED if converting to DateTime.</param>
+        /// <remarks>
+        /// All unsigned numeric conversions DO NOT currently support rounding.
+        /// </remarks>
         public static T CleanAndConvert<T>(object str, string regex = "", Enums.RegexAction action = Enums.RegexAction.Select, string format = "")
         {
             string txt;
@@ -65,50 +68,46 @@ namespace UtilitySharp
                 case ("System.Int32"):
                 case ("System.Int64"):
                     {
-                        var a = Regex.Replace(txt, "[^0-9]", string.Empty);
-                        var b = string.IsNullOrWhiteSpace(a);
-                        return (T)Convert.ChangeType(b ? 0 : Convert.ToInt64(a), typeof(T));
+                        var a = Regex.Replace(Regex.Match(txt, "(-?[0-9]([0-9,]+)?.?([0-9]+)?)").Value, "[^0-9.-]", string.Empty);
+                        var b = Math.Round(Convert.ToDecimal(a));
+                        return (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? 0 : Convert.ToInt64(b), typeof(T));
                     }
                 case ("System.UInt16"):
                 case ("System.UInt32"):
                 case ("System.UInt64"):
                     {
-                        var a = Regex.Replace(txt, "[^0-9]", string.Empty);
-                        var b = string.IsNullOrWhiteSpace(a);
-                        return (T)Convert.ChangeType(b ? 0 : Convert.ToUInt64(a), typeof(T));
+                        var a = Regex.Replace(Regex.Match(txt, "([0-9]([0-9,]+)?)").Value, "[^0-9]", string.Empty);
+                        return (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? 0 : Convert.ToUInt64(a), typeof(T));
                     }
                 case ("System.Single"):
                 case ("System.Double"):
                 case ("System.Decimal"):
                     {
-                        var a = Regex.Replace(txt, "[^0-9.]", string.Empty);
-                        var b = string.IsNullOrWhiteSpace(a);
-                        return (T)Convert.ChangeType(b ? 0 : Convert.ToDecimal(a), typeof(T));
+                        var a = Regex.Replace(Regex.Match(txt, "(-?[0-9]([0-9,]+)?.?([0-9]+)?)").Value, "[^0-9.-]", string.Empty);
+                        return (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? 0 : Convert.ToDecimal(a), typeof(T));
                     }
                 // Number Nullable
                 case ("System.Nullable`1[System.Int16]"):
                 case ("System.Nullable`1[System.Int32]"):
                 case ("System.Nullable`1[System.Int64]"):
                     {
-                        var a = Regex.Replace(txt, "[^0-9]", string.Empty);
-                        var b = string.IsNullOrWhiteSpace(a);
-                        return (T)Convert.ChangeType(b ? (long?)null : Convert.ToInt64(a), typeof(T));
+                        var a = Regex.Replace(Regex.Match(txt, "(-?[0-9]([0-9,]+)?.?([0-9]+)?)").Value, "[^0-9.-]", string.Empty);
+                        var b = Math.Round(Convert.ToDecimal(a));
+                        return (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? (Int64?)null : Convert.ToInt64(b), typeof(T));
                     }
                 case ("System.Nullable`1[System.UInt16]"):
                 case ("System.Nullable`1[System.UInt32]"):
                 case ("System.Nullable`1[System.UInt64]"):
-                {
-                    var a = Regex.Replace(txt, "[^0-9]", string.Empty);
-                    var b = string.IsNullOrWhiteSpace(a);
-                    return (T)Convert.ChangeType(b ? (ulong?)null : Convert.ToUInt64(a), typeof(T));
-                }
+                    {
+                        var a = Regex.Replace(Regex.Match(txt, "([0-9]([0-9,]+)?)").Value, "[^0-9]", string.Empty);
+                        return (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? (UInt64?)null : Convert.ToUInt64(a), typeof(T));
+                    }
                 case ("System.Nullable`1[System.Single]"):
                 case ("System.Nullable`1[System.Double]"):
                 case ("System.Nullable`1[System.Decimal]"):
                     {
-                        var a = Regex.Replace(txt, "[^0-9.]", string.Empty);
-                        var b = string.IsNullOrWhiteSpace(a);
-                        return (T)Convert.ChangeType(b ? (decimal?)null : Convert.ToDecimal(a), typeof(T));
+                        var a = Regex.Replace(Regex.Match(txt, "(-?[0-9]([0-9,]+)?.?([0-9]+)?)").Value, "[^0-9.-]", string.Empty);
+                        return (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? (Decimal?)null : Convert.ToDecimal(a), typeof(T));
                     }
                 // Other
                 case ("System.String"):
