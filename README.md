@@ -16,11 +16,11 @@ Install-Package UtilitySharp
 
 Some examples of its usage.
 
-### UtilitySharp.StringHelper.CleanAndConvert()
+### StringHelper.CleanAndConvert()
 
 ```
-int n = UtilitySharp.StringHelper.CleanAndConvert<int>("My number is 5."); // Output: 5
-DateTime dt = UtilitySharp.StringHelper.CleanAndConvert<DateTime>("The date is 24/07/2018 01:26!", "dd/MM/yyyy HH:mm"); // Output: 24/07/2018 01:26:00 AM
+int n = StringHelper.CleanAndConvert<int>("My number is 5."); // Output: 5
+DateTime dt = StringHelper.CleanAndConvert<DateTime>("The date is 24/07/2018 01:26!", "dd/MM/yyyy HH:mm"); // Output: 24/07/2018 01:26:00 AM
 ```
 
 More examples of other methods to come!

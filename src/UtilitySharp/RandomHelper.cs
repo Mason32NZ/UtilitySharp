@@ -104,7 +104,7 @@ namespace UtilitySharp
         /// <summary>
         /// Returns a random alphanumeric string of the provided length.
         /// </summary>
-        /// <param name="min">The length of the output string.</param>
+        /// <param name="length">The length of the output string.</param>
         public static string RandomString(int length)
         {
             List<char> chars = new List<char>();
