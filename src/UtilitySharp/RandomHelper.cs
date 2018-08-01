@@ -105,33 +105,39 @@ namespace UtilitySharp
         /// Returns a random alphanumeric string of the provided length.
         /// </summary>
         /// <param name="length">The length of the output string.</param>
-        public static string RandomString(int length)
+        /// <param name="chars">A string containing non-alphanumeric chars which can also be included in the returned string.</param>
+        public static string RandomString(int length, string chars = "")
         {
-            List<char> chars = new List<char>();
+            List<char> str = new List<char>();
 
             for (int i = 0; i < length; i++)
             {
-                int type = RandomInt(0, 2);
+                int type = chars != "" ? RandomInt(0, 3) : RandomInt(0, 2);
                 switch (type)
                 {
                     case 0:
-                        {
-                            chars.Add(RandomLowerChar());
-                            break;
-                        }
+                    {
+                        str.Add(RandomLowerChar());
+                        break;
+                    }
                     case 1:
-                        {
-                            chars.Add(RandomUpperChar());
-                            break;
-                        }
+                    {
+                        str.Add(RandomUpperChar());
+                        break;
+                    }
                     case 2:
-                        {
-                            chars.Add((char)(RandomInt(0, 9) + 48));
-                            break;
-                        }
+                    {
+                        str.Add((char)(RandomInt(0, 9) + 48));
+                        break;
+                    }
+                    case 3:
+                    {
+                        str.Add(chars[RandomInt(1, chars.Length)]);
+                        break;
+                    }
                 }
             }
-            return (chars.ToString());
+            return (str.ToString());
         }
     }
 }
