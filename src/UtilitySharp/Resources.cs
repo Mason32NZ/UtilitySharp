@@ -62,5 +62,15 @@ namespace UtilitySharp
             };
             return map;
         }
+
+        /// <summary>
+        /// The regex string used to match a boolean.
+        /// </summary>
+        public static string TrueFalseRegex()
+        {
+            const string a = "(?<![A-Za-z0-9])";
+            const string b = "(?![A-Za-z0-9])";
+            return $"(({a}TRUE{b})|({a}T{b})|({a}YES{b})|({a}Y{b})|({a}1{b})|({a}FALSE{b})|({a}F{b})|({a}NO{b})|({a}N{b})|({a}0{b}))";
+        }
     }
 }

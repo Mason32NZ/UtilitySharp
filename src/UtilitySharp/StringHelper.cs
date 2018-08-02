@@ -17,7 +17,7 @@ namespace UtilitySharp
         /// <param name="format">A formatting string used for DateTime.ParseExact(). REQUIRED if converting to DateTime.</param>
         public static T CleanAndConvert<T>(object str, string format = "")
         {
-            T value = default(T);
+            T value;
             string txt;
             string type = typeof(T).ToString();
 
@@ -131,7 +131,7 @@ namespace UtilitySharp
                 {
                     bool a = false;
                     var _true = new List<string> { "TRUE", "T", "YES", "Y", "1" };
-                    var m = Regex.Match(txt.ToUpper(), "(TRUE|T|YES|Y|1|FALSE|F|NO|N|0)").Value;
+                    var m = Regex.Match(txt.ToUpper(), Resources.TrueFalseRegex()).Value;
                     if (_true.Contains(m)) { a = true; }
                     value = (T)Convert.ChangeType(a, typeof(T));
                     break;
@@ -141,7 +141,7 @@ namespace UtilitySharp
                     bool? a = null;
                     var _true = new List<string> {"TRUE", "T", "YES", "Y", "1"};
                     var _false = new List<string> {"FALSE", "F", "NO", "N", "0"};
-                    var m = Regex.Match(txt.ToUpper(), "(TRUE|T|YES|Y|1|FALSE|F|NO|N|0)").Value;
+                    var m = Regex.Match(txt.ToUpper(), Resources.TrueFalseRegex()).Value;
                     if (_true.Contains(m)) { a = true; }
                     else if (_false.Contains(m)) { a = false; }
                     value = (T)Activator.CreateInstance(typeof(T), a);
@@ -223,7 +223,7 @@ namespace UtilitySharp
                 {
                     var list = new List<bool>();
                     var _true = new List<string> { "TRUE", "T", "YES", "Y", "1" };
-                    for (var m = Regex.Match(txt.ToUpper(), "(TRUE|T|YES|Y|1|FALSE|F|NO|N|0)"); m.Success; m = m.NextMatch())
+                    for (var m = Regex.Match(txt.ToUpper(), Resources.TrueFalseRegex()); m.Success; m = m.NextMatch())
                     {
                         var a = _true.Contains(m.Value);
                         list.Add(a);
