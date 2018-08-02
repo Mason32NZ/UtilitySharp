@@ -7,7 +7,7 @@ What can it do you might ask?
 * Find the nth index of a substing.
 * Check if two numbers are equal 'enough'.  
 
-and so much more! Find more information in the [wiki](https://github.com/Mason32NZ/UtilitySharp/wiki/Table-of-Contents).
+and so much more! Find out more information in the [wiki](https://github.com/Mason32NZ/UtilitySharp/wiki/Table-of-Contents).
 
 UtilitySharp is also on NuGet and can be found [here](https://www.nuget.org/packages/UtilitySharp/).
 
