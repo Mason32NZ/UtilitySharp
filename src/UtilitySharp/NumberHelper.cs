@@ -13,11 +13,11 @@ namespace UtilitySharp
         /// <param name="a">The first number to be compared.</param>
         /// <param name="b">The second number to be compared.</param>
         /// <param name="epsilon">The maxium allowed range between the two numbers.</param>
-        public static bool NearlyEqual(double a, double b, double epsilon)
+        public static bool IsNearlyEqual(double a, double b, double epsilon)
         {
-            double absA = Math.Abs(a);
-            double absB = Math.Abs(b);
-            double diff = Math.Abs(a - b);
+            var absA = Math.Abs(a);
+            var absB = Math.Abs(b);
+            var diff = Math.Abs(a - b);
             if (a == b)
             {
                 return true;

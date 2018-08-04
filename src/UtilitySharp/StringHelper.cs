@@ -330,6 +330,17 @@ namespace UtilitySharp
                     }
                 }
             }
+            for (var m = Regex.Match(str, "[^X]"); m.Success; m = m.NextMatch())
+            {
+                str = ReplaceFirst(str, m.Value, new string('X', m.Length));
+                var substr = m.Value;
+                var special = new List<string>{ "[", @"\", "^", "$", ".", "|", "?", "*", "+", "(", ")", "{", "}" };
+                if (special.Contains(m.Value))
+                {
+                    substr = $@"\{m.Value}";
+                }
+                processed.Add(new KeyValuePair<int, string>(m.Index, substr));
+            }
 
             if (processed.Any())
             {
@@ -340,6 +351,34 @@ namespace UtilitySharp
             {
                 throw new Exception($"'{str}' is an invalid DateTime format string!");
             }
+        }
+
+        /// <summary>
+        /// Returns if the provided string is a vaild true or false string.
+        /// </summary>
+        /// <param name="str">The string to be checked.</param>
+        public static bool IsTrueFalse(string str)
+        {
+            var a = new List<string> { "TRUE", "T", "YES", "Y", "1", "FALSE", "F", "NO", "N", "0" };
+            return a.Any(p => p == str.ToUpper());
+        }
+
+        /// <summary>
+        /// Returns if the provided string is a vaild email string.
+        /// </summary>
+        /// <param name="str">The string to be checked.</param>
+        public static bool IsEmail(string str)
+        {
+            var success = true;
+            try
+            {
+                var email = new System.Net.Mail.MailAddress(str);
+            }
+            catch
+            {
+                success = false;
+            }
+            return success;
         }
     }
 }
