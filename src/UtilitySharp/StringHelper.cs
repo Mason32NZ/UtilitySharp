@@ -15,7 +15,7 @@ namespace UtilitySharp
         /// </summary>
         /// <param name="str">The string or object that supports .ToString() to be cleaned and converted.</param>
         /// <param name="format">A formatting string used for DateTime.ParseExact(). REQUIRED if converting to DateTime.</param>
-        public static T CleanAndConvert<T>(object str, string format = "")
+        public static T CleanAndConvert<T>(object str, string format = "") // TODO: Add support for number words and symbols (eg. ^,e).
         {
             T value;
             string txt;
