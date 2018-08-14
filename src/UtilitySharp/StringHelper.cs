@@ -248,10 +248,23 @@ namespace UtilitySharp
         /// <param name="newVal">The new substring.</param>
         public static string ReplaceAllButFirst(string str, string oldVal, string newVal)
         {
-            if (!string.IsNullOrEmpty(str) && str.Contains(oldVal))
+            return ReplaceAllButNth(str, oldVal, newVal, 1);
+        }
+
+        /// <summary>
+        /// Replaces all but the nth instance of a substring. Supports regex.
+        /// </summary>
+        /// <param name="str">The original string.</param>
+        /// <param name="oldVal">The substring to be replaced.</param>
+        /// <param name="newVal">The new substring.</param>
+        /// <param name="n">The nth occurrence of the substring.</param>
+        public static string ReplaceAllButNth(string str, string oldVal, string newVal, int n)
+        {
+            if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, oldVal))
             {
-                var a = IndexOfNth(str, oldVal, 1) + oldVal.Length;
-                str = $"{str.Substring(0, a)}{Regex.Replace(str.Substring(a), oldVal, newVal)}";
+                var a = IndexOfNth(str, oldVal, n);
+                var b = Regex.Match(str, oldVal).Length;
+                str = $"{Regex.Replace(str.Substring(0, a), oldVal, newVal)}{str.Substring(a, b)}{Regex.Replace(str.Substring(a + b), oldVal, newVal)}";
             }
             return str;
         }
@@ -379,6 +392,31 @@ namespace UtilitySharp
                 success = false;
             }
             return success;
+        }
+
+        /// <summary>
+        /// Returns if the provided string contains HTML.
+        /// </summary>
+        /// <param name="str">The string to be checked.</param>
+        /// <param name="strict">If the method should check for exact HTML tags. WARNING: Will make this slower (but more accurate).</param>
+        public static bool IsHtml(string str, bool strict = false)
+        {
+            if (!strict)
+            {
+                return Regex.IsMatch(str, "(</?(!?[A-Za-z]+[0-9]?)/?>)", RegexOptions.IgnoreCase);
+            }
+            else // TODO: Improve advanced HTML detection by upgrading Resources.HtmlTagList() to map.
+            {
+                foreach (var tag in Resources.HtmlTagList())
+                {
+                    var check = Regex.IsMatch(str, $"(</?({tag})/?>)", RegexOptions.IgnoreCase);
+                    if (check)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
         }
     }
 }
