@@ -64,6 +64,22 @@ namespace UtilitySharp
         }
 
         /// <summary>
+        /// The regex string used to match a number.
+        /// </summary>
+        public static string NumberRegex()
+        {
+            return "(-?[0-9]([0-9,]+)?(\\.[0-9]+)?(?<!,))";
+        }
+
+        /// <summary>
+        /// The regex string used to match a non-negative, non-decimal number.
+        /// </summary>
+        public static string UnsignedNumberRegex()
+        {
+            return "([0-9]([0-9,]+)?(?<!,))";
+        }
+
+        /// <summary>
         /// The regex string used to match a boolean.
         /// </summary>
         public static string TrueFalseRegex()
@@ -71,6 +87,14 @@ namespace UtilitySharp
             const string a = "(?<![A-Za-z0-9])";
             const string b = "(?![A-Za-z0-9])";
             return $"(({a}TRUE{b})|({a}T{b})|({a}YES{b})|({a}Y{b})|({a}1{b})|({a}FALSE{b})|({a}F{b})|({a}NO{b})|({a}N{b})|({a}0{b}))";
+        }
+
+        /// <summary>
+        /// The regex string used to match HTML tags.
+        /// </summary>
+        public static string HtmlTagRegex()
+        {
+            return "(</?(!(DOCTYPE|doctype).+?|\\w+((\\s+\\w+(\\s*=\\s*(?:\".*?\"|'.*?'|[\\^'\">\\s]+))?)+\\s*|\\s*))/?>)";
         }
 
         /// <summary>

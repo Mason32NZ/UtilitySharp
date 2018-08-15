@@ -44,7 +44,7 @@ namespace UtilitySharp
                 case ("System.Int32"):
                 case ("System.Int64"):
                 {
-                    var a = Regex.Replace(Regex.Match(txt, "(-?[0-9]([0-9,]+)?.?([0-9]+)?)").Value, "[^0-9.-]", string.Empty);
+                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), "\\.", string.Empty);
                     var b = string.IsNullOrWhiteSpace(a) ? 0 : Math.Round(Convert.ToDecimal(a));
                     value = (T)Convert.ChangeType(b, typeof(T));
                     break;
@@ -53,7 +53,7 @@ namespace UtilitySharp
                 case ("System.UInt32"):
                 case ("System.UInt64"):
                 {
-                    var a = Regex.Replace(Regex.Match(txt, "([0-9]([0-9,]+)?)").Value, "[^0-9]", string.Empty);
+                    var a = Regex.Replace(Regex.Match(txt, Resources.UnsignedNumberRegex()).Value, "[^0-9]", string.Empty);
                     value = (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? 0 : Convert.ToUInt64(a), typeof(T));
                     break;
                 }
@@ -61,7 +61,7 @@ namespace UtilitySharp
                 case ("System.Double"):
                 case ("System.Decimal"):
                 {
-                    var a = Regex.Replace(Regex.Match(txt, "(-?[0-9]([0-9,]+)?.?([0-9]+)?)").Value, "[^0-9.-]", string.Empty);
+                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), "\\.", string.Empty);
                     value = (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? 0 : Convert.ToDecimal(a), typeof(T));
                     break;
                 }
@@ -70,7 +70,7 @@ namespace UtilitySharp
                 case ("System.Nullable`1[System.Int32]"):
                 case ("System.Nullable`1[System.Int64]"):
                 {
-                    var a = Regex.Replace(Regex.Match(txt, "(-?[0-9]([0-9,]+)?.?([0-9]+)?)").Value, "[^0-9.-]", string.Empty);
+                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), "\\.", string.Empty);
                     var b = string.IsNullOrWhiteSpace(a) ? (Decimal?) null : Math.Round(Convert.ToDecimal(a));
                     value = (T)Convert.ChangeType(b, typeof(T));
                     break;
@@ -79,7 +79,7 @@ namespace UtilitySharp
                 case ("System.Nullable`1[System.UInt32]"):
                 case ("System.Nullable`1[System.UInt64]"):
                 {
-                    var a = Regex.Replace(Regex.Match(txt, "([0-9]([0-9,]+)?)").Value, "[^0-9]", string.Empty);
+                    var a = Regex.Replace(Regex.Match(txt, Resources.UnsignedNumberRegex()).Value, "[^0-9]", string.Empty);
                     value = (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? (UInt64?) null : Convert.ToUInt64(a), typeof(T));
                     break;
                 }
@@ -87,7 +87,7 @@ namespace UtilitySharp
                 case ("System.Nullable`1[System.Double]"):
                 case ("System.Nullable`1[System.Decimal]"):
                 {
-                    var a = Regex.Replace(Regex.Match(txt, "(-?[0-9]([0-9,]+)?.?([0-9]+)?)").Value, "[^0-9.-]", string.Empty);
+                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), "\\.", string.Empty);
                     value = (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? (Decimal?) null : Convert.ToDecimal(a), typeof(T));
                     break;
                 }
@@ -153,9 +153,9 @@ namespace UtilitySharp
                 case ("System.Collections.Generic.List`1[System.Int64]"):
                 {
                     var list = new List<decimal>();
-                    for (var m = Regex.Match(txt, "(-?[0-9]([0-9,]+)?.?([0-9]+)?)"); m.Success; m = m.NextMatch())
+                    for (var m = Regex.Match(txt, Resources.NumberRegex()); m.Success; m = m.NextMatch())
                     {
-                        var a = Regex.Replace(m.Value, "[^0-9.-]", string.Empty);
+                        var a = ReplaceAllButFirst(Regex.Replace(m.Value, "[^0-9\\.-]", string.Empty), "\\.", string.Empty);
                         if (!string.IsNullOrWhiteSpace(a))
                         {
                             var b = Math.Round(Convert.ToDecimal(a));
@@ -170,7 +170,7 @@ namespace UtilitySharp
                 case ("System.Collections.Generic.List`1[System.UInt64]"):
                 {
                     var list = new List<ulong>();
-                    for (var m = Regex.Match(txt, "([0-9]([0-9,]+)?)"); m.Success; m = m.NextMatch())
+                    for (var m = Regex.Match(txt, Resources.UnsignedNumberRegex()); m.Success; m = m.NextMatch())
                     {
                         var a = Regex.Replace(m.Value, "[^0-9]", string.Empty);
                         if (!string.IsNullOrWhiteSpace(a))
@@ -187,9 +187,9 @@ namespace UtilitySharp
                 case ("System.Collections.Generic.List`1[System.Decimal]"):
                 {
                     var list = new List<decimal>();
-                    for (var m = Regex.Match(txt, "(-?[0-9]([0-9,]+)?.?([0-9]+)?)"); m.Success; m = m.NextMatch())
+                    for (var m = Regex.Match(txt, Resources.NumberRegex()); m.Success; m = m.NextMatch())
                     {
-                        var a = Regex.Replace(m.Value, "[^0-9.-]", string.Empty);
+                        var a = ReplaceAllButFirst(Regex.Replace(m.Value, "[^0-9\\.-]", string.Empty), "\\.", string.Empty);
                         if (!string.IsNullOrWhiteSpace(a))
                         {
                             var b = Convert.ToDecimal(a);
@@ -241,7 +241,7 @@ namespace UtilitySharp
         }
 
         /// <summary>
-        /// Replaces all but the first instance of a substring. Supports regex.
+        /// Replaces all but the first instance of a substring. WARNING: Supports regex.
         /// </summary>
         /// <param name="str">The original string.</param>
         /// <param name="oldVal">The substring to be replaced.</param>
@@ -252,7 +252,7 @@ namespace UtilitySharp
         }
 
         /// <summary>
-        /// Replaces all but the nth instance of a substring. Supports regex.
+        /// Replaces all but the nth instance of a substring. WARNING: Supports regex.
         /// </summary>
         /// <param name="str">The original string.</param>
         /// <param name="oldVal">The substring to be replaced.</param>
@@ -270,7 +270,7 @@ namespace UtilitySharp
         }
 
         /// <summary>
-        /// Replaces only the first instance of a substring. Supports regex.
+        /// Replaces only the first instance of a substring. WARNING: Supports regex.
         /// </summary>
         /// <param name="str">The original string.</param>
         /// <param name="oldVal">The substring to be replaced.</param>
@@ -281,7 +281,7 @@ namespace UtilitySharp
         }
 
         /// <summary>
-        /// Replaces the nth instance of a substring. Supports regex.
+        /// Replaces the nth instance of a substring. WARNING: Supports regex.
         /// </summary>
         /// <param name="str">The original string.</param>
         /// <param name="oldVal">The substring to be replaced.</param>
@@ -302,7 +302,7 @@ namespace UtilitySharp
         }
 
         /// <summary>
-        /// Returns the index of the nth instance of a substring. Supports regex.
+        /// Returns the index of the nth instance of a substring. WARNING: Supports regex.
         /// </summary>
         /// <param name="str">The original string.</param>
         /// <param name="substr">The substring to look for.</param>
@@ -398,25 +398,9 @@ namespace UtilitySharp
         /// Returns if the provided string contains HTML.
         /// </summary>
         /// <param name="str">The string to be checked.</param>
-        /// <param name="strict">If the method should check for exact HTML tags. WARNING: Will make this slower (but more accurate).</param>
-        public static bool IsHtml(string str, bool strict = false)
+        public static bool IsHtml(string str)
         {
-            if (!strict)
-            {
-                return Regex.IsMatch(str, "(</?(!?[A-Za-z]+[0-9]?)/?>)", RegexOptions.IgnoreCase);
-            }
-            else // TODO: Improve advanced HTML detection by upgrading Resources.HtmlTagList() to map.
-            {
-                foreach (var tag in Resources.HtmlTagList())
-                {
-                    var check = Regex.IsMatch(str, $"(</?({tag})/?>)", RegexOptions.IgnoreCase);
-                    if (check)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
+            return Regex.IsMatch(str, Resources.HtmlTagRegex(), RegexOptions.IgnoreCase);
         }
     }
 }

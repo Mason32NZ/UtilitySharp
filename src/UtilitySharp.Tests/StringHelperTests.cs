@@ -42,5 +42,13 @@ namespace UtilitySharp.Tests
             var actual = StringHelper.CleanAndConvert<List<DateTime>>("The date was 24/07/2018 but now its 01/08/2018!", "dd/MM/yyyy");
             Assert.AreEqual(string.Join(" ", expected), string.Join(" ", actual));
         }
+
+        [TestMethod]
+        public void ReplaceAllButFirst()
+        {
+            var expected = "51XX23X";
+            var actual = StringHelper.ReplaceAllButFirst("5111231", "1", "X");
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
