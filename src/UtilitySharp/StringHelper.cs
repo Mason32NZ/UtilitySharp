@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace UtilitySharp
@@ -44,7 +46,7 @@ namespace UtilitySharp
                 case ("System.Int32"):
                 case ("System.Int64"):
                 {
-                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), ".", string.Empty);
+                    var a = Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty);
                     var b = string.IsNullOrWhiteSpace(a) ? 0 : Math.Round(Convert.ToDecimal(a));
                     value = (T)Convert.ChangeType(b, typeof(T));
                     break;
@@ -61,7 +63,7 @@ namespace UtilitySharp
                 case ("System.Double"):
                 case ("System.Decimal"):
                 {
-                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), ".", string.Empty);
+                    var a = Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty);
                     value = (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? 0 : Convert.ToDecimal(a), typeof(T));
                     break;
                 }
@@ -70,7 +72,7 @@ namespace UtilitySharp
                 case ("System.Nullable`1[System.Int32]"):
                 case ("System.Nullable`1[System.Int64]"):
                 {
-                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), ".", string.Empty);
+                    var a = Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty);
                     var b = string.IsNullOrWhiteSpace(a) ? (Decimal?) null : Math.Round(Convert.ToDecimal(a));
                     value = (T)Convert.ChangeType(b, typeof(T));
                     break;
@@ -87,7 +89,7 @@ namespace UtilitySharp
                 case ("System.Nullable`1[System.Double]"):
                 case ("System.Nullable`1[System.Decimal]"):
                 {
-                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), ".", string.Empty);
+                    var a = Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty);
                     value = (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? (Decimal?) null : Convert.ToDecimal(a), typeof(T));
                     break;
                 }
@@ -101,7 +103,7 @@ namespace UtilitySharp
                 {
                     if (format != "")
                     {
-                        var regex = DateTimeFormatStringToRegex(format);
+                        var regex = TimeHelper.DateTimeFormatStringToRegex(format);
                         txt = Regex.Match(txt, regex).Value;
                         var a = string.IsNullOrWhiteSpace(txt) ? DateTime.MinValue : DateTime.ParseExact(txt, format, null);
                         value = (T)Convert.ChangeType(a, typeof(T));
@@ -116,7 +118,7 @@ namespace UtilitySharp
                 {
                     if (format != "")
                     {
-                        var regex = DateTimeFormatStringToRegex(format);
+                        var regex = TimeHelper.DateTimeFormatStringToRegex(format);
                         txt = Regex.Match(txt, regex).Value;
                         var a = string.IsNullOrWhiteSpace(txt) ? (DateTime?)null : DateTime.ParseExact(txt, format, null);
                         value = (T)Convert.ChangeType(a, typeof(T));
@@ -155,7 +157,7 @@ namespace UtilitySharp
                     var list = new List<decimal>();
                     for (var m = Regex.Match(txt, Resources.NumberRegex()); m.Success; m = m.NextMatch())
                     {
-                        var a = ReplaceAllButFirst(Regex.Replace(m.Value, "[^0-9\\.-]", string.Empty), ".", string.Empty);
+                        var a = Regex.Replace(m.Value, "[^0-9\\.-]", string.Empty);
                         if (!string.IsNullOrWhiteSpace(a))
                         {
                             var b = Math.Round(Convert.ToDecimal(a));
@@ -189,7 +191,7 @@ namespace UtilitySharp
                     var list = new List<decimal>();
                     for (var m = Regex.Match(txt, Resources.NumberRegex()); m.Success; m = m.NextMatch())
                     {
-                        var a = ReplaceAllButFirst(Regex.Replace(m.Value, "[^0-9\\.-]", string.Empty), ".", string.Empty);
+                        var a = Regex.Replace(m.Value, "[^0-9\\.-]", string.Empty);
                         if (!string.IsNullOrWhiteSpace(a))
                         {
                             var b = Convert.ToDecimal(a);
@@ -205,7 +207,7 @@ namespace UtilitySharp
                     if (format != "")
                     {
                         var list = new List<DateTime>();
-                        var regex = DateTimeFormatStringToRegex(format);
+                        var regex = TimeHelper.DateTimeFormatStringToRegex(format);
                         for (var m = Regex.Match(txt, regex); m.Success; m = m.NextMatch())
                         {
                             var a = DateTime.ParseExact(m.Value, format, null);
@@ -238,6 +240,50 @@ namespace UtilitySharp
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// Removes all non-ASCII compatible characters from the provided string.
+        /// </summary>
+        /// <param name="str">The string to be converted.</param>
+        /// <param name="newVal">The string used to replace non-ASCII characters.</param>
+        public static string ToASCII(string str, string newVal = " ")
+        {
+            return Encoding.ASCII.GetString(
+                Encoding.Convert(
+                    Encoding.UTF8, 
+                    Encoding.GetEncoding(Encoding.ASCII.EncodingName, new EncoderReplacementFallback(newVal), new DecoderExceptionFallback()), 
+                    Encoding.UTF8.GetBytes(str))
+                );
+        }
+
+        /// <summary>
+        /// Removes all non-human typable characters from the provided string.
+        /// </summary>
+        /// <param name="str">The string to be converted.</param>
+        public static string ToHumanTypable(string str) // TODO: Test.
+        {
+            if (!string.IsNullOrEmpty(str))
+            {
+                return Regex.Replace(str, Resources.NonHumanTypableRegex(), string.Empty);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Removes irregular characters from a filename.
+        /// </summary>
+        /// <param name="str">The string to be cleaned.</param>
+        /// <param name="newVal">The string used to replace irregular characters.</param>
+        public static string CleanFilename(string str, string newVal = "") // TODO: Test and improve.
+        {
+            string invalidChars = Regex.Escape(Path.GetInvalidFileNameChars().ToString());
+            string invalidRegex = $@"([{invalidChars}]*\.+$)|([{invalidChars}]+)";
+
+            return Regex.Replace(str, invalidRegex, newVal).Replace("\\", newVal).Replace("/", newVal).Trim();
         }
 
         /// <summary>
@@ -339,46 +385,6 @@ namespace UtilitySharp
         }
 
         /// <summary>
-        /// Returns the regex string for a given DateTime format string.
-        /// </summary>
-        /// <param name="str">The DateTime format string.</param>
-        public static string DateTimeFormatStringToRegex(string str)
-        {
-            var original = str;
-            var map = Resources.DateTimeFormatStringToRegexMap();
-            var processed = new List<KeyValuePair<int, string>>();
-
-            foreach (var format in map)
-            {
-                if (str.Contains(format.Key))
-                {
-                    for (int i = 0; i < Regex.Matches(original, format.Key).Count; i++)
-                    {
-                        var index = IndexOfNth(original, format.Key, i + 1);
-                        str = ReplaceFirst(str, format.Key, new string('X', format.Key.Length));
-                        processed.Add(new KeyValuePair<int, string>(index, format.Value));
-                    }
-                }
-            }
-            for (var m = Regex.Match(str, "[^X]"); m.Success; m = m.NextMatch())
-            {
-                str = ReplaceFirst(str, m.Value, new string('X', m.Length));
-                var substr = EscapeRegexSpecialCharacters(m.Value);
-                processed.Add(new KeyValuePair<int, string>(m.Index, substr));
-            }
-
-            if (processed.Any())
-            {
-                var regexList = processed.OrderBy(p => p.Key).Select(p => p.Value).ToList();
-                return $"({string.Join(string.Empty, regexList)})";
-            }
-            else
-            {
-                throw new Exception($"'{str}' is an invalid DateTime format string!");
-            }
-        }
-
-        /// <summary>
         /// Returns if the provided string is a vaild true or false string.
         /// </summary>
         /// <param name="str">The string to be checked.</param>
@@ -413,6 +419,16 @@ namespace UtilitySharp
         public static bool IsHtml(string str)
         {
             return Regex.IsMatch(str, Resources.HtmlTagRegex(), RegexOptions.IgnoreCase);
+        }
+
+        /// <summary>
+        /// Returns if the provided string is a number.
+        /// </summary>
+        /// <param name="str">The string to be checked.</param>
+        public static bool IsNumeric(string str)
+        {
+            var a = Regex.Match(str, Resources.NumericRegex());
+            return a.Length == str.Length;
         }
 
         /// <summary>

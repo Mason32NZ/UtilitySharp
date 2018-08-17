@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace UtilitySharp
 {
@@ -64,6 +65,14 @@ namespace UtilitySharp
         }
 
         /// <summary>
+        /// The regex string used to match a pure number.
+        /// </summary>
+        public static string NumericRegex()
+        {
+            return "(-?[0-9]([0-9]+)?(\\.[0-9]+)?)";
+        }
+
+        /// <summary>
         /// The regex string used to match a number.
         /// </summary>
         public static string NumberRegex()
@@ -77,6 +86,14 @@ namespace UtilitySharp
         public static string UnsignedNumberRegex()
         {
             return "([0-9]([0-9,]+)?(?<!,))";
+        }
+
+        /// <summary>
+        /// The regex string used to match all non-human typable characters.
+        /// </summary>
+        public static string NonHumanTypableRegex()
+        {
+            return "[^A-Za-z0-9`~!@#$%^&*()_+\\[\\]{}|;':\",./<>?]";
         }
 
         /// <summary>
@@ -128,6 +145,14 @@ namespace UtilitySharp
                 "wbr"
             };
             return list;
+        }
+
+        /// <summary>
+        /// 1970/01/01
+        /// </summary>
+        public static DateTime EpochTime()
+        {
+            return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         }
     }
 }
