@@ -44,7 +44,7 @@ namespace UtilitySharp
                 case ("System.Int32"):
                 case ("System.Int64"):
                 {
-                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), "\\.", string.Empty);
+                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), ".", string.Empty);
                     var b = string.IsNullOrWhiteSpace(a) ? 0 : Math.Round(Convert.ToDecimal(a));
                     value = (T)Convert.ChangeType(b, typeof(T));
                     break;
@@ -61,7 +61,7 @@ namespace UtilitySharp
                 case ("System.Double"):
                 case ("System.Decimal"):
                 {
-                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), "\\.", string.Empty);
+                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), ".", string.Empty);
                     value = (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? 0 : Convert.ToDecimal(a), typeof(T));
                     break;
                 }
@@ -70,7 +70,7 @@ namespace UtilitySharp
                 case ("System.Nullable`1[System.Int32]"):
                 case ("System.Nullable`1[System.Int64]"):
                 {
-                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), "\\.", string.Empty);
+                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), ".", string.Empty);
                     var b = string.IsNullOrWhiteSpace(a) ? (Decimal?) null : Math.Round(Convert.ToDecimal(a));
                     value = (T)Convert.ChangeType(b, typeof(T));
                     break;
@@ -87,7 +87,7 @@ namespace UtilitySharp
                 case ("System.Nullable`1[System.Double]"):
                 case ("System.Nullable`1[System.Decimal]"):
                 {
-                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), "\\.", string.Empty);
+                    var a = ReplaceAllButFirst(Regex.Replace(Regex.Match(txt, Resources.NumberRegex()).Value, "[^0-9\\.-]", string.Empty), ".", string.Empty);
                     value = (T)Convert.ChangeType(string.IsNullOrWhiteSpace(a) ? (Decimal?) null : Convert.ToDecimal(a), typeof(T));
                     break;
                 }
@@ -155,7 +155,7 @@ namespace UtilitySharp
                     var list = new List<decimal>();
                     for (var m = Regex.Match(txt, Resources.NumberRegex()); m.Success; m = m.NextMatch())
                     {
-                        var a = ReplaceAllButFirst(Regex.Replace(m.Value, "[^0-9\\.-]", string.Empty), "\\.", string.Empty);
+                        var a = ReplaceAllButFirst(Regex.Replace(m.Value, "[^0-9\\.-]", string.Empty), ".", string.Empty);
                         if (!string.IsNullOrWhiteSpace(a))
                         {
                             var b = Math.Round(Convert.ToDecimal(a));
@@ -189,7 +189,7 @@ namespace UtilitySharp
                     var list = new List<decimal>();
                     for (var m = Regex.Match(txt, Resources.NumberRegex()); m.Success; m = m.NextMatch())
                     {
-                        var a = ReplaceAllButFirst(Regex.Replace(m.Value, "[^0-9\\.-]", string.Empty), "\\.", string.Empty);
+                        var a = ReplaceAllButFirst(Regex.Replace(m.Value, "[^0-9\\.-]", string.Empty), ".", string.Empty);
                         if (!string.IsNullOrWhiteSpace(a))
                         {
                             var b = Convert.ToDecimal(a);
@@ -241,25 +241,31 @@ namespace UtilitySharp
         }
 
         /// <summary>
-        /// Replaces all but the first instance of a substring. WARNING: Supports regex.
+        /// Replaces all but the first instance of a substring.
         /// </summary>
         /// <param name="str">The original string.</param>
         /// <param name="oldVal">The substring to be replaced.</param>
         /// <param name="newVal">The new substring.</param>
-        public static string ReplaceAllButFirst(string str, string oldVal, string newVal)
+        /// <param name="useRegex">If oldVal should be considered as regex.</param>
+        public static string ReplaceAllButFirst(string str, string oldVal, string newVal, bool useRegex = false)
         {
             return ReplaceAllButNth(str, oldVal, newVal, 1);
         }
 
         /// <summary>
-        /// Replaces all but the nth instance of a substring. WARNING: Supports regex.
+        /// Replaces all but the nth instance of a substring.
         /// </summary>
         /// <param name="str">The original string.</param>
         /// <param name="oldVal">The substring to be replaced.</param>
         /// <param name="newVal">The new substring.</param>
         /// <param name="n">The nth occurrence of the substring.</param>
-        public static string ReplaceAllButNth(string str, string oldVal, string newVal, int n)
+        /// <param name="useRegex">If oldVal should be considered as regex.</param>
+        public static string ReplaceAllButNth(string str, string oldVal, string newVal, int n, bool useRegex = false)
         {
+            if (!useRegex)
+            {
+                oldVal = EscapeRegexSpecialCharacters(oldVal);
+            }
             if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, oldVal))
             {
                 var a = IndexOfNth(str, oldVal, n);
@@ -270,25 +276,31 @@ namespace UtilitySharp
         }
 
         /// <summary>
-        /// Replaces only the first instance of a substring. WARNING: Supports regex.
+        /// Replaces only the first instance of a substring.
         /// </summary>
         /// <param name="str">The original string.</param>
         /// <param name="oldVal">The substring to be replaced.</param>
         /// <param name="newVal">The new substring.</param>
-        public static string ReplaceFirst(string str, string oldVal, string newVal)
+        /// <param name="useRegex">If oldVal should be considered as regex.</param>
+        public static string ReplaceFirst(string str, string oldVal, string newVal, bool useRegex = false)
         {
             return ReplaceTheNth(str, oldVal, newVal, 1);
         }
 
         /// <summary>
-        /// Replaces the nth instance of a substring. WARNING: Supports regex.
+        /// Replaces the nth instance of a substring.
         /// </summary>
         /// <param name="str">The original string.</param>
         /// <param name="oldVal">The substring to be replaced.</param>
         /// <param name="newVal">The new substring.</param>
         /// <param name="n">The nth occurrence of the substring.</param>
-        public static string ReplaceTheNth(string str, string oldVal, string newVal, int n)
+        /// <param name="useRegex">If oldVal should be considered as regex.</param>
+        public static string ReplaceTheNth(string str, string oldVal, string newVal, int n, bool useRegex = false)
         {
+            if (!useRegex)
+            {
+                oldVal = EscapeRegexSpecialCharacters(oldVal);
+            }
             var i = 0;
             for (var m = Regex.Match(str, oldVal); m.Success; m = m.NextMatch())
             {
@@ -302,13 +314,18 @@ namespace UtilitySharp
         }
 
         /// <summary>
-        /// Returns the index of the nth instance of a substring. WARNING: Supports regex.
+        /// Returns the index of the nth instance of a substring.
         /// </summary>
         /// <param name="str">The original string.</param>
         /// <param name="substr">The substring to look for.</param>
         /// <param name="n">The nth occurrence of the substring.</param>
-        public static int IndexOfNth(string str, string substr, int n)
+        /// <param name="useRegex">If oldVal should be considered as regex.</param>
+        public static int IndexOfNth(string str, string substr, int n, bool useRegex = false)
         {
+            if (!useRegex)
+            {
+                substr = EscapeRegexSpecialCharacters(substr);
+            }
             var i = 0;
             for (var m = Regex.Match(str, substr); m.Success; m = m.NextMatch())
             {
@@ -346,12 +363,7 @@ namespace UtilitySharp
             for (var m = Regex.Match(str, "[^X]"); m.Success; m = m.NextMatch())
             {
                 str = ReplaceFirst(str, m.Value, new string('X', m.Length));
-                var substr = m.Value;
-                var special = new List<string>{ "[", @"\", "^", "$", ".", "|", "?", "*", "+", "(", ")", "{", "}" };
-                if (special.Contains(m.Value))
-                {
-                    substr = $@"\{m.Value}";
-                }
+                var substr = EscapeRegexSpecialCharacters(m.Value);
                 processed.Add(new KeyValuePair<int, string>(m.Index, substr));
             }
 
@@ -401,6 +413,26 @@ namespace UtilitySharp
         public static bool IsHtml(string str)
         {
             return Regex.IsMatch(str, Resources.HtmlTagRegex(), RegexOptions.IgnoreCase);
+        }
+
+        /// <summary>
+        /// Escapes all special regex characters in a string.
+        /// </summary>
+        /// <param name="str">The string to be escaped.</param>
+        public static string EscapeRegexSpecialCharacters(string str)
+        {
+            var special = new List<string> {"[", "\\", "^", "$", ".", "|", "?", "*", "+", "(", ")", "{", "}"};
+            if (!string.IsNullOrWhiteSpace(str))
+            {
+                foreach (var c in special)
+                {
+                    if (str.Contains(c))
+                    {
+                        str = Regex.Replace(str, c == "\\" ? "((?<!\\\\)\\\\[^\\\\^\\[$.|?*+(){}])" : $"((?<!\\\\)\\{c})", $"\\{c}");
+                    }
+                }
+            }
+            return str;
         }
     }
 }
