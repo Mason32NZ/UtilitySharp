@@ -7,6 +7,7 @@ namespace UtilitySharp.Sandbox
         static void Main()
         {
             // Manual Testing
+            Console.WriteLine();
             Console.ReadKey();
         }
     }

@@ -154,5 +154,40 @@ namespace UtilitySharp
         {
             return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         }
+
+        /// <summary>
+        /// A list of all regex special characters.
+        /// </summary>
+        public static List<string> RegexSpecialCharactersList()
+        {
+            return new List<string> {"[", "\\", "^", "$", ".", "|", "?", "*", "+", "(", ")", "{", "}"};
+        }
+
+        /// <summary>
+        /// A list of all strings that mean TRUE.
+        /// </summary>
+        public static List<string> TrueList()
+        {
+            return new List<string> {"TRUE", "T", "YES", "Y", "1"};
+        }
+
+        /// <summary>
+        /// A list of all strings that mean FALSE.
+        /// </summary>
+        public static List<string> FalseList()
+        {
+            return new List<string> {"FALSE", "F", "NO", "N", "0"};
+        }
+
+        /// <summary>
+        /// A list of all strings that mean TRUE and FALSE.
+        /// </summary>
+        public static List<string> TrueFalseList()
+        {
+            var list = new List<string>();
+            list.AddRange(TrueList());
+            list.AddRange(FalseList());
+            return list;
+        }
     }
 }

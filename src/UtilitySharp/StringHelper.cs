@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -132,20 +133,17 @@ namespace UtilitySharp
                 case ("System.Boolean"):
                 {
                     bool a = false;
-                    var _true = new List<string> { "TRUE", "T", "YES", "Y", "1" };
                     var m = Regex.Match(txt.ToUpper(), Resources.TrueFalseRegex()).Value;
-                    if (_true.Contains(m)) { a = true; }
+                    if (Resources.TrueList().Contains(m)) { a = true; }
                     value = (T)Convert.ChangeType(a, typeof(T));
                     break;
                 }
                 case ("System.Nullable`1[System.Boolean]"):
                 {
                     bool? a = null;
-                    var _true = new List<string> {"TRUE", "T", "YES", "Y", "1"};
-                    var _false = new List<string> {"FALSE", "F", "NO", "N", "0"};
                     var m = Regex.Match(txt.ToUpper(), Resources.TrueFalseRegex()).Value;
-                    if (_true.Contains(m)) { a = true; }
-                    else if (_false.Contains(m)) { a = false; }
+                    if (Resources.TrueList().Contains(m)) { a = true; }
+                    else if (Resources.FalseList().Contains(m)) { a = false; }
                     value = (T)Activator.CreateInstance(typeof(T), a);
                     break;
                 }
@@ -224,10 +222,9 @@ namespace UtilitySharp
                 case ("System.Collections.Generic.List`1[System.Boolean]"):
                 {
                     var list = new List<bool>();
-                    var _true = new List<string> { "TRUE", "T", "YES", "Y", "1" };
                     for (var m = Regex.Match(txt.ToUpper(), Resources.TrueFalseRegex()); m.Success; m = m.NextMatch())
                     {
-                        var a = _true.Contains(m.Value);
+                        var a = Resources.TrueList().Contains(m.Value);
                         list.Add(a);
                     }
                     value = (T)Convert.ChangeType(list, typeof(T));
@@ -246,13 +243,13 @@ namespace UtilitySharp
         /// Removes all non-ASCII compatible characters from the provided string.
         /// </summary>
         /// <param name="str">The string to be converted.</param>
-        /// <param name="newVal">The string used to replace non-ASCII characters.</param>
-        public static string ToASCII(string str, string newVal = " ")
+        /// <param name="replacement">The string used to replace non-ASCII characters.</param>
+        public static string StringToASCII(string str, string replacement = "")
         {
             return Encoding.ASCII.GetString(
                 Encoding.Convert(
                     Encoding.UTF8, 
-                    Encoding.GetEncoding(Encoding.ASCII.EncodingName, new EncoderReplacementFallback(newVal), new DecoderExceptionFallback()), 
+                    Encoding.GetEncoding(Encoding.ASCII.EncodingName, new EncoderReplacementFallback(replacement), new DecoderExceptionFallback()), 
                     Encoding.UTF8.GetBytes(str))
                 );
         }
@@ -261,29 +258,32 @@ namespace UtilitySharp
         /// Removes all non-human typable characters from the provided string.
         /// </summary>
         /// <param name="str">The string to be converted.</param>
-        public static string ToHumanTypable(string str) // TODO: Test.
+        /// <param name="replacement">The string used to replace non-human typable characters.</param>
+        public static string StringToHumanTypable(string str, string replacement = "") // TODO: Test.
         {
             if (!string.IsNullOrEmpty(str))
             {
-                return Regex.Replace(str, Resources.NonHumanTypableRegex(), string.Empty);
-            }
-            else
-            {
+                str = StringToASCII(str, replacement);
+                if (!string.IsNullOrEmpty(str))
+                {
+                    return Regex.Replace(str, Resources.NonHumanTypableRegex(), replacement);
+                }
                 return null;
             }
+            return null;
         }
 
         /// <summary>
         /// Removes irregular characters from a filename.
         /// </summary>
         /// <param name="str">The string to be cleaned.</param>
-        /// <param name="newVal">The string used to replace irregular characters.</param>
-        public static string CleanFilename(string str, string newVal = "") // TODO: Test and improve.
+        /// <param name="replacement">The string used to replace irregular characters.</param>
+        public static string CleanFilename(string str, string replacement = "") // TODO: Test.
         {
-            string invalidChars = Regex.Escape(Path.GetInvalidFileNameChars().ToString());
-            string invalidRegex = $@"([{invalidChars}]*\.+$)|([{invalidChars}]+)";
+            string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
+            string invalidRegex = $@"([{invalidChars}\\]*\.+$)|([{invalidChars}\\]+)";
 
-            return Regex.Replace(str, invalidRegex, newVal).Replace("\\", newVal).Replace("/", newVal).Trim();
+            return Regex.Replace(str, invalidRegex, replacement).Trim();
         }
 
         /// <summary>
@@ -295,7 +295,7 @@ namespace UtilitySharp
         /// <param name="useRegex">If oldVal should be considered as regex.</param>
         public static string ReplaceAllButFirst(string str, string oldVal, string newVal, bool useRegex = false)
         {
-            return ReplaceAllButNth(str, oldVal, newVal, 1);
+            return ReplaceAllButNth(str, oldVal, newVal, 1, useRegex);
         }
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace UtilitySharp
         /// <param name="useRegex">If oldVal should be considered as regex.</param>
         public static string ReplaceFirst(string str, string oldVal, string newVal, bool useRegex = false)
         {
-            return ReplaceTheNth(str, oldVal, newVal, 1);
+            return ReplaceTheNth(str, oldVal, newVal, 1, useRegex);
         }
 
         /// <summary>
@@ -390,8 +390,7 @@ namespace UtilitySharp
         /// <param name="str">The string to be checked.</param>
         public static bool IsTrueFalse(string str)
         {
-            var a = new List<string> { "TRUE", "T", "YES", "Y", "1", "FALSE", "F", "NO", "N", "0" };
-            return a.Any(p => p == str.ToUpper());
+            return Resources.TrueFalseList().Any(p => p == str.ToUpper());
         }
 
         /// <summary>
@@ -437,10 +436,9 @@ namespace UtilitySharp
         /// <param name="str">The string to be escaped.</param>
         public static string EscapeRegexSpecialCharacters(string str)
         {
-            var special = new List<string> {"[", "\\", "^", "$", ".", "|", "?", "*", "+", "(", ")", "{", "}"};
             if (!string.IsNullOrWhiteSpace(str))
             {
-                foreach (var c in special)
+                foreach (var c in Resources.RegexSpecialCharactersList())
                 {
                     if (str.Contains(c))
                     {
@@ -449,6 +447,26 @@ namespace UtilitySharp
                 }
             }
             return str;
+        }
+
+        /// <summary>
+        /// Converts a given CSV style string to a list.
+        /// </summary>
+        /// <param name="str">The string to be converted.</param>
+        /// <param name="delimiter">The char to split the string by.</param>
+        public static List<T> StringToList<T>(string str, char delimiter = ',') // TODO: Test.
+        {
+            return new List<T>(str.Split(delimiter).Select(p => CleanAndConvert<T>(p)));
+        }
+
+        /// <summary>
+        /// Converts a given list to a CSV style string.
+        /// </summary>
+        /// <param name="list">The list to be converted.</param>
+        /// <param name="delimiter">The string to join the list by.</param>
+        public static string ListToString<T>(List<T> list, string delimiter = ",")
+        {
+            return string.Join(delimiter, list);
         }
     }
 }
