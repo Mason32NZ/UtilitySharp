@@ -4,10 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Mason Galland</Authors>
-    <PackageProjectUrl>https://github.com/Mason32NZ/UtilitySharp</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Mason32NZ/UtilitySharp/wiki</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Mason32NZ/UtilitySharp</RepositoryUrl>
     <RepositoryType>Public</RepositoryType>
-    <Version>3.0.1</Version>
+    <Version>3.0.2</Version>
     <Description>A jack of all trades and master of none. UtilitySharp provides helper classes for things such as strings, and numbers so you don’t have to reinvent the wheel.
 
 * Clean dirty data strings and give it back to you in the requested type.
@@ -15,9 +15,9 @@
 * Find or replace the nth instance of a substing.
 
 and so much more! Find out more information in the GitHub wiki.</Description>
-    <AssemblyVersion>3.0.1.0</AssemblyVersion>
-    <FileVersion>3.0.1.0</FileVersion>
-    <PackageIconUrl>https://raw.githubusercontent.com/Mason32NZ/UtilitySharp/master/img/logo.png</PackageIconUrl>
+    <AssemblyVersion>3.0.2.0</AssemblyVersion>
+    <FileVersion>3.0.2.0</FileVersion>
+    <PackageIconUrl>https://raw.githubusercontent.com/Mason32NZ/UtilitySharp/master/assets/img/logo64x64.png</PackageIconUrl>
     <PackageTags>utility,string,helper,clean,convert,raw,data,datetime,regex,tool,kit</PackageTags>
   </PropertyGroup>
 
