@@ -1,4 +1,4 @@
-# UtilitySharp
+# ![alt text](https://raw.githubusercontent.com/Mason32NZ/UtilitySharp/master/img/logo.png "UtilitySharp") UtilitySharp
 A jack of all trades and master of none. UtilitySharp provides helper classes for things such as strings, and numbers so you don’t have to reinvent the wheel.
 
 What can it do you might ask?
