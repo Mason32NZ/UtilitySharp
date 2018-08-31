@@ -243,7 +243,7 @@ namespace UtilitySharp
         /// </summary>
         /// <param name="str">The string to be converted.</param>
         /// <param name="replacement">The string used to replace non-ASCII characters.</param>
-        public static string StringToASCII(string str, string replacement = "")
+        public static string StringToAscii(string str, string replacement = "")
         {
             return Encoding.ASCII.GetString(
                 Encoding.Convert(
@@ -262,7 +262,7 @@ namespace UtilitySharp
         {
             if (!string.IsNullOrEmpty(str))
             {
-                str = StringToASCII(str, replacement);
+                str = StringToAscii(str, replacement);
                 if (!string.IsNullOrEmpty(str))
                 {
                     return Regex.Replace(str, Resources.NonHumanTypableRegex(), replacement);
@@ -387,7 +387,7 @@ namespace UtilitySharp
         /// Returns if the provided string is a vaild true or false string.
         /// </summary>
         /// <param name="str">The string to be checked.</param>
-        public static bool IsTrueFalse(string str)
+        public static bool IsBoolean(string str)
         {
             return Resources.TrueFalseList().Any(p => p == str.ToUpper());
         }

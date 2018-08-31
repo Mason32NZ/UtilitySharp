@@ -72,7 +72,7 @@ namespace UtilitySharp
         /// Converts ISO 8601 time to a DateTime.
         /// </summary>
         /// <param name="isoTime">The ISO 8601 string to be converted.</param>
-        public static DateTime ISO8601ToDateTime(string isoTime)
+        public static DateTime Iso8601ToDateTime(string isoTime)
         {
             return DateTime.Parse(isoTime);
         }
@@ -81,7 +81,7 @@ namespace UtilitySharp
         /// Converts a DateTime to ISO 8601 time.
         /// </summary>
         /// <param name="dateTime">The DateTime to be converted.</param>
-        public static string DateTimeToISO8601(DateTime dateTime)
+        public static string DateTimeToIso8601(DateTime dateTime)
         {
             return dateTime.ToString("O");
         }
