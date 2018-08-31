@@ -6,7 +6,7 @@ What can it do you might ask?
 * Generate cryptographically random numbers.
 * Find or replace the nth instance of a substing. 
 
-and so much more! Find out more information in the [wiki](https://github.com/Mason32NZ/UtilitySharp/wiki/Table-of-Contents).
+and so much more! Find out more information in the [wiki](https://github.com/Mason32NZ/UtilitySharp/wiki).
 
 UtilitySharp is also on NuGet and can be found [here](https://www.nuget.org/packages/UtilitySharp/).
 
@@ -17,4 +17,4 @@ Install-Package UtilitySharp
 ```
 
 ## Usage
-Please checkout the [wiki](https://github.com/Mason32NZ/UtilitySharp/wiki/Table-of-Contents) for examples and details.
+Please checkout the [wiki](https://github.com/Mason32NZ/UtilitySharp/wiki) for examples and details.
