@@ -10,13 +10,16 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="720"
-   height="720"
-   viewBox="0 0 190.49999 190.50001"
+   width="710"
+   height="710"
+   viewBox="0 0 187.85416 187.85417"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="drawing.svg">
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="C:\Repositories\UtilitySharp\img\logo256x256.png"
+   inkscape:export-xdpi="34.614086"
+   inkscape:export-ydpi="34.614086">
   <defs
      id="defs2">
     <linearGradient
@@ -100,7 +103,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.58314919"
-     inkscape:cx="301.54771"
+     inkscape:cx="45.181067"
      inkscape:cy="336.05503"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
@@ -140,13 +143,13 @@
      inkscape:groupmode="layer"
      id="layer1"
      style="display:inline"
-     transform="translate(3.8732873,-61.773304)" />
+     transform="translate(3.8732873,-64.419138)" />
   <g
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="u#"
      style="display:inline"
-     transform="translate(3.8732873,-61.773304)">
+     transform="translate(3.8732873,-64.419138)">
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Praetorian Academy';-inkscape-font-specification:'Praetorian Academy, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -160,7 +163,7 @@
          style="stroke-width:0.26458332" /></text>
     <g
        id="g5681"
-       transform="translate(-38.642199,-14.971583)">
+       transform="translate(-39.700533,-13.384082)">
       <path
          style="display:inline;fill:url(#linearGradient4872);fill-opacity:1;stroke-width:0.26458332;filter:url(#filter5666)"
          d="m 222.04952,171.96581 c 0,1.83523 -44.29153,78.55042 -45.88089,79.46803 -1.58936,0.91762 -90.172428,0.91762 -91.761789,0 -1.589361,-0.91761 -45.880893,-77.6328 -45.880893,-79.46803 0,-1.83524 44.291532,-78.550426 45.880893,-79.468044 1.589361,-0.917618 90.172429,-0.917618 91.761789,0 1.58936,0.917618 45.88089,77.632804 45.88089,79.468044 z"
@@ -206,11 +209,11 @@
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="115.07"
-     y="127.24948"
+     y="124.60365"
      id="text20"><tspan
        sodipodi:role="line"
        id="tspan18"
        x="115.07"
-       y="136.90498"
+       y="134.25914"
        style="stroke-width:0.26458332" /></text>
 </svg>
