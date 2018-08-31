@@ -7,18 +7,22 @@
     <PackageProjectUrl>https://github.com/Mason32NZ/UtilitySharp/wiki</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Mason32NZ/UtilitySharp</RepositoryUrl>
     <RepositoryType>Public</RepositoryType>
-    <Version>3.0.2</Version>
-    <Description>A jack of all trades and master of none. UtilitySharp provides helper classes for things such as strings, and numbers so you don’t have to reinvent the wheel.
+    <Version>3.0.3</Version>
+    <Description>A jack of all trades and master of none.
+
+UtilitySharp provides helper classes with useful and powerful methods for things such as strings, datetimes, randomness, and numbers so you don’t have to reinvent the wheel. As such, UtilitySharp strives to be the one library that you will always download for every new project to save you time and make your life a little bit easier.
+
+What can it do you might ask?
 
 * Clean dirty data strings and give it back to you in the requested type.
 * Generate cryptographically random numbers.
 * Find or replace the nth instance of a substing.
 
 and so much more! Find out more information in the GitHub wiki.</Description>
-    <AssemblyVersion>3.0.2.0</AssemblyVersion>
-    <FileVersion>3.0.2.0</FileVersion>
+    <AssemblyVersion>3.0.3.0</AssemblyVersion>
+    <FileVersion>3.0.3.0</FileVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/Mason32NZ/UtilitySharp/master/assets/img/logo64x64.png</PackageIconUrl>
-    <PackageTags>utility,string,helper,clean,convert,raw,data,datetime,regex,tool,kit</PackageTags>
+    <PackageTags>utility,string,helper,clean,convert,raw,data,datetime,regex,tool,kit,library,collection,csharp</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
