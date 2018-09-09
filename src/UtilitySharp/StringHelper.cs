@@ -4,9 +4,10 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
-using UtilitySharp.Models;
 
 namespace UtilitySharp
 {
@@ -428,8 +429,7 @@ namespace UtilitySharp
         /// <param name="str">The string to be checked.</param>
         public static bool IsNumeric(string str)
         {
-            var a = Regex.Match(str, Resources.NumericRegex());
-            return a.Length == str.Length;
+            return Regex.IsMatch(str, $"^{Resources.NumericRegex()}$");
         }
 
         /// <summary>
@@ -469,6 +469,45 @@ namespace UtilitySharp
         public static string ListToString<T>(List<T> list, string delimiter = ",")
         {
             return string.Join(delimiter, list);
+        }
+
+        /// <summary>
+        /// Converts all newlines to a given string.
+        /// </summary>
+        /// <param name="str">The original string.</param>
+        /// <param name="newVal">The string to replace all newlines with.</param>
+        public static string ReplaceNewline(string str, string newVal)
+        {
+            // Ideas:
+            // "<br>\n": Converts a string to HTML.
+            // "\n": Normalizes a string's newlines.
+            return Regex.Replace(str, "(\\n|\\r\\n|\\r|\\n\\r)", newVal);
+        }
+
+        /// <summary>
+        /// Returns if the provided string is a IPv4 address.
+        /// </summary>
+        /// <param name="str">The string to be checked.</param>
+        public static bool IsIPv4(string str)
+        {
+            if (IPAddress.TryParse(str, out var ip)) 
+            {
+                return ip.AddressFamily == AddressFamily.InterNetwork;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns if the provided string is a IPv6 address.
+        /// </summary>
+        /// <param name="str">The string to be checked.</param>
+        public static bool IsIPv6(string str)
+        {
+            if (IPAddress.TryParse(str, out var ip)) 
+            {
+                return ip.AddressFamily == AddressFamily.InterNetworkV6;
+            }
+            return false;
         }
     }
 }
